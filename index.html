@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>آلة حاسبة متكاملة</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<h2>آلة حاسبة متكاملة</h2>
+
+<label for="num1">الرقم الأول:</label>
+<input type="number" id="num1" step="any" placeholder="أدخل الرقم الأول" />
+
+<label for="operator">اختر العملية:</label>
+<select id="operator" aria-label="اختر العملية الحسابية">
+  <option value="+">+</option>
+  <option value="-">-</option>
+  <option value="*">*</option>
+  <option value="/">/</option>
+  <option value="%">%</option>
+  <option value="^">^ (الأس)</option>
+  <option value="r">√ (الجذر التربيعي)</option>
+  <option value="s">sin (جيب الزاوية بالراديان)</option>
+  <option value="c">cos (جيب تمام الزاوية بالراديان)</option>
+  <option value="t">tan (ظل الزاوية بالراديان)</option>
+  <option value="l">log10 (لوغاريتم أساس 10)</option>
+  <option value="n">ln (اللوغاريتم الطبيعي)</option>
+  <option value="a">abs (القيمة المطلقة)</option>
+</select>
+
+<label for="num2" id="labelNum2">الرقم الثاني:</label>
+<input type="number" id="num2" step="any" placeholder="أدخل الرقم الثاني" />
+
+<button onclick="calculate()" aria-label="احسب">احسب</button>
+
+<div id="result" role="alert" aria-live="polite"></div>
+<div class="note">ملاحظة: بعض العمليات مثل الجذر والجيب تستخدم الرقم الأول فقط.</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
