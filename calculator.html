@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>آلة حاسبة متكاملة</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    direction: rtl;
+    background: #f4f7f8;
+    padding: 20px;
+    max-width: 400px;
+    margin: 40px auto;
+    border-radius: 8px;
+    box-shadow: 0 0 15px #ccc;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+  }
+  label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+  }
+  input[type="number"], select {
+    width: 100%;
+    padding: 10px 8px;
+    margin-top: 6px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 25px;
+    background-color: #0078D7;
+    border: none;
+    color: white;
+    font-size: 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #005fa3;
+  }
+  #result {
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #222;
+    min-height: 30px;
+  }
+  .note {
+    font-size: 13px;
+    color: #666;
+    margin-top: 10px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<h2>آلة حاسبة متكاملة</h2>
+
+<label for="num1">الرقم الأول:</label>
+<input type="number" id="num1" step="any" placeholder="أدخل الرقم الأول" />
+
+<label for="operator">اختر العملية:</label>
+<select id="operator">
+  <option value="+">+</option>
+  <option value="-">-</option>
+  <option value="*">*</option>
+  <option value="/">/</option>
+  <option value="%">%</option>
+  <option value="^">^ (الأس)</option>
+  <option value="r">√ (الجذر التربيعي)</option>
+  <option value="s">sin (جيب الزاوية بالراديان)</option>
+  <option value="c">cos (جيب تمام الزاوية بالراديان)</option>
+  <option value="t">tan (ظل الزاوية بالراديان)</option>
+  <option value="l">log10 (لوغاريتم أساس 10)</option>
+  <option value="n">ln (اللوغاريتم الطبيعي)</option>
+  <option value="a">abs (القيمة المطلقة)</option>
+</select>
+
+<label for="num2" id="labelNum2">الرقم الثاني:</label>
+<input type="number" id="num2" step="any" placeholder="أدخل الرقم الثاني" />
+
+<button onclick="calculate()">احسب</button>
+
+<div id="result"></div>
+<div class="note">ملاحظة: بعض العمليات مثل الجذر والجيب تستخدم الرقم الأول فقط.</div>
+
+<script>
+  const operatorSelect = document.getElementById('operator');
+  const num2Input = document.getElementById('num2');
+  const labelNum2 = document.getElementById('labelNum2');
+
+  operatorSelect.addEventListener('change', () => {
+    const op = operatorSelect.value;
+    const needsSecond = ['+', '-', '*', '/', '%', '^'];
+    if (needsSecond.includes(op)) {
+      num2Input.style.display = 'block';
+      labelNum2.style.display = 'block';
+    } else {
+      num2Input.style.display = 'none';
+      labelNum2.style.display = 'none';
+      num2Input.value = '';
+    }
+  });
+
+  function calculate() {
+    const x = parseFloat(document.getElementById('num1').value);
+    const op = operatorSelect.value;
+    let y = parseFloat(num2Input.value);
+    let res = '';
+
+    if (isNaN(x)) {
+      res = 'يرجى إدخال الرقم الأول بشكل صحيح.';
+      document.getElementById('result').innerText = res;
+      return;
+    }
+
+    if (['+', '-', '*', '/', '%', '^'].includes(op)) {
+      if (isNaN(y)) {
+        res = 'يرجى إدخال الرقم الثاني بشكل صحيح.';
+        document.getElementById('result').innerText = res;
+        return;
+      }
+    }
+
+    switch(op) {
+      case '+': res = x + y; break;
+      case '-': res = x - y; break;
+      case '*': res = x * y; break;
+      case '/': 
+        res = (y !== 0) ? (x / y) : 'خطأ: القسمة على صفر غير مسموحة'; 
+        break;
+      case '%': 
+        res = (y !== 0) ? (x % y) : 'خطأ: باقي القسمة على صفر غير مسموح'; 
+        break;
+      case '^': res = Math.pow(x, y); break;
+      case 'r': 
+        res = (x >= 0) ? Math.sqrt(x) : 'خطأ: الجذر التربيعي لعدد سالب غير معرف'; 
+        break;
+      case 's': res = Math.sin(x); break;
+      case 'c': res = Math.cos(x); break;
+      case 't': res = Math.tan(x); break;
+      case 'l': 
+        res = (x > 0) ? Math.log10(x) : 'خطأ: اللوغاريتم أساس 10 غير معرف لعدد ≤ 0'; 
+        break;
+      case 'n': 
+        res = (x > 0) ? Math.log(x) : 'خطأ: اللوغاريتم الطبيعي غير معرف لعدد ≤ 0'; 
+        break;
+      case 'a': res = Math.abs(x); break;
+      default: res = 'عملية غير معروفة'; 
+    }
+
+    if (typeof res === 'number') {
+      res = res.toFixed(5);
+    }
+
+    document.getElementById('result').innerText = 'النتيجة: ' + res;
+  }
+
+  window.onload = () => {
+    operatorSelect.dispatchEvent(new Event('change'));
+  };
+</script>
+
+</body>
+</html>
